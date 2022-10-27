@@ -66,7 +66,7 @@ x = 0
 y = 0
 new_color = ''
 
-with open('input.txt') as reader:
+with open('Lab 2/input.txt') as reader:
     size = reader.readline().split(",")
     width = int(size[0])
     height = int(size[1])
@@ -116,7 +116,7 @@ for row in grid:
     i += 1
 
 
-with open('output.txt', "a") as writer:
+with open('Lab 2/output.txt', "a") as writer:
     content = ""
     for row in grid:
         content += "["
