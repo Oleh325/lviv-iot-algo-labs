@@ -9,39 +9,42 @@ class Graph:
                     self.graph.setdefault(i, set()).add(j)
 
     # Adds all available paths from start to end vertecies to all_paths
-    def update_all_paths(self, start, end, visited: list[bool], path: list[int]):
+    def update_all_paths(self, start, end, visited: list[bool], path: list[int], max_length):
         
         visited[start - 1] = True
         path.append(start)
 
+        if path.__len__() > max_length:
+            path.pop()
+            visited[start - 1] = False
+            return
         if start == end:
             self.all_paths.append(list(path))
         for i in self.graph[start]:
             if not visited[i - 1]:
-                self.update_all_paths(i, end, visited, path)
+                self.update_all_paths(i, end, visited, path, max_length)
 
         path.pop()
         visited[start - 1] = False
 
     # Returns all paths from all vertrcies (ie all beer combinations in our case)
-    def get_all_paths(self) -> list[list[int]]:
-        
-        for i in self.graph:
-            visited = [False] * self.graph.__len__()
-            path = []
-            for j in self.graph:
-                if i != j:
-                    self.update_all_paths(i, j, visited, path)
+    def get_all_paths_from_element(self, element, max_length) -> list[list[int]]:
+        self.all_paths = []
+        visited = [False] * self.graph.__len__()
+        path = []
+        for i in self.graph.get(element):
+            self.update_all_paths(element, i, visited, path, max_length)
         
         return self.all_paths
 
 
 def beers_algorithm(n: int, b: int, graph: dict) -> int:
     beer_types = []
-    lowest_amount = 0
+    lowest_amount = 50
     lowest_amount_types = []
     amount_of_beers = 0
-    combinations = Graph(graph).get_all_paths()
+    beer_graph = Graph(graph)
+    combinations = beer_graph.get_all_paths_from_element(1, lowest_amount)
 
     i = 0
     for combination in combinations:
@@ -52,11 +55,14 @@ def beers_algorithm(n: int, b: int, graph: dict) -> int:
             beer_types.append(beer)
             satisfied_employees.update(graph[beer])
             if satisfied_employees.__len__() == n:
-                if lowest_amount == 0 or lowest_amount > amount_of_beers:
+                if lowest_amount > amount_of_beers:
                     lowest_amount = amount_of_beers
                     lowest_amount_types = list(beer_types)
                     break
         beer_types = []
+        if combinations[i] == combinations[len(combinations) - 1] and (combination[0] + 1) in graph.keys():
+            for combo in beer_graph.get_all_paths_from_element(combination[0] + 1, lowest_amount):
+                combinations.append(combo)
         i += 1
                 
 
