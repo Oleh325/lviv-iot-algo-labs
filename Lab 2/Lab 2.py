@@ -1,6 +1,5 @@
 from queue import Queue
 
-
 class Node():
 
     def __init__(self, x, y, color):
@@ -60,70 +59,76 @@ def floodFill(grid: Grid, node: Node, new_color):
                 queue.put(grid.findNode(currentNode.x, currentNode.y + 1))
                 queue.put(grid.findNode(currentNode.x, currentNode.y - 1))
 
-width = 0
-height = 0
-x = 0
-y = 0
-new_color = ''
 
-with open('input.txt') as reader:
-    size = reader.readline().split(",")
-    width = int(size[0])
-    height = int(size[1])
-    grid = [['W' for x in range(width)] for y in range(height)]
-    coordinates = reader.readline().split(",")
-    x = int(coordinates[0])
-    y = int(coordinates[1])
-    new_color = reader.readline().replace("'", "").replace("\n", "")
-    content = reader.readline()
-    i = 0
-    while content:
-        j = 0
-        for element in content.replace("[", "").replace("]", "").replace(",", "").split('\'')[1::2]:
-            grid[i][j] = element
-            j += 1
+def main():
+    width = 0
+    height = 0
+    x = 0
+    y = 0
+    new_color = ''
+
+    with open('Lab 2/input.txt') as reader:
+        size = reader.readline().split(",")
+        width = int(size[0])
+        height = int(size[1])
+        grid = [['W' for x in range(width)] for y in range(height)]
+        coordinates = reader.readline().split(",")
+        x = int(coordinates[0])
+        y = int(coordinates[1])
+        new_color = reader.readline().replace("'", "").replace("\n", "")
         content = reader.readline()
+        i = 0
+        while content:
+            j = 0
+            for element in content.replace("[", "").replace("]", "").replace(",", "").split('\'')[1::2]:
+                grid[i][j] = element
+                j += 1
+            content = reader.readline()
+            i += 1
+
+    gridOfNodes = Grid(width, height)
+    print(f"\nCanvas size: {width} x {height}")
+    print(f"Coordinates of the fill tool target: x = {x}, y = {y}")
+    print(f"New color: {new_color}")
+    print("Before fill: ")
+    i = 0
+    for row in grid:
+        j = 0
+        for element in row:
+            node = Node(i, j, element)
+            gridOfNodes.addNode(node)
+            j += 1
         i += 1
 
-gridOfNodes = Grid(width, height)
-print(f"\nCanvas size: {width} x {height}")
-print(f"Coordinates of the fill tool target: x = {x}, y = {y}")
-print(f"New color: {new_color}")
-print("Before fill: ")
-i = 0
-for row in grid:
-    j = 0
-    for element in row:
-        node = Node(i, j, element)
-        gridOfNodes.addNode(node)
-        j += 1
-    i += 1
+    gridOfNodes.printGrid()
 
-gridOfNodes.printGrid()
+    node = gridOfNodes.findNode(x, y)
+    floodFill(gridOfNodes, node, new_color)
 
-node = gridOfNodes.findNode(x, y)
-floodFill(gridOfNodes, node, new_color)
+    print("\nAfter fill: ")
+    gridOfNodes.printGrid()
 
-print("\nAfter fill: ")
-gridOfNodes.printGrid()
-
-i = 0
-for row in grid:
-    j = 0
-    for element in row:
-        grid[i][j] = gridOfNodes.findNode(i, j).color
-        j += 1
-    i += 1
-
-
-with open('output.txt', "a") as writer:
-    content = ""
+    i = 0
     for row in grid:
-        content += "["
+        j = 0
         for element in row:
-            content += "'" + element + "', "
-        content = content[:-2]
-        content += "],\n"
-    content = content[:-2]
+            grid[i][j] = gridOfNodes.findNode(i, j).color
+            j += 1
+        i += 1
 
-    writer.write(content)
+
+    with open('Lab 2/output.txt', "a") as writer:
+        content = ""
+        for row in grid:
+            content += "["
+            for element in row:
+                content += "'" + element + "', "
+            content = content[:-2]
+            content += "],\n"
+        content = content[:-2]
+
+        writer.write(content)
+
+
+if __name__ == "__main__":
+    main()

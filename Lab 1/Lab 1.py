@@ -150,19 +150,23 @@ class AVL_Tree():
             count += 1
             
  
- 
-testTree = AVL_Tree()
-root = None
-values = [9, 5, 10, 0, 6, 11, -1, 1, 2, 4, 8, 7, 16, 23]
- 
-for value in values:
-    root = testTree.insert(root, value)
- 
-print("Before deletion: ")
-testTree.printTree(root)
-print()
- 
-root = testTree.delete(root, 9)
+def main():    
+    testTree = AVL_Tree()
+    root = None
+    values = [9, 5, 10, 0, 6, 11, -1, 1, 2, 4, 8, 7, 16, 23]
+    
+    for value in values:
+        root = testTree.insert(root, value)
+    
+    print("Before deletion: ")
+    testTree.printTree(root)
+    print()
+    
+    root = testTree.delete(root, 9)
 
-print("After deletion: ")
-testTree.printTree(root)
+    print("After deletion: ")
+    testTree.printTree(root)
+
+
+if __name__ == "__main__":
+    main()
