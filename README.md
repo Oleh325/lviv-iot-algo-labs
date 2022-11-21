@@ -35,3 +35,23 @@ Limitation:
 Every employee likes at least one type of beer
 0 < N < 50
 0 < B < 50
+
+## Lab 4
+
+WChain
+
+Two participants play a linguistic game. At the beginning of the game, a list of N words is given. The first player chooses an arbitrary word w1 and crosses out one arbitrary letter from it so to get another word w2 from this list. After that, the turn goes to another player, and he tries to do the same with the word w2. The game ends in one of two cases:
+- One letter word remains.
+- It is not possible to cross out any letter to get another word from the dictionary.
+
+Task: Determine the length of the maximum chain that can be achieved in this game at given words.
+
+Incoming data:
+The first line contains N — the number of words in the dictionary. Each of the following N lines contains a word which consists of small Latin letters from a to z.
+
+Output data:
+The length of the maximum chain
+
+Limitation:
+1 ≤ N ≤ 10^5
+1 ≤ L ≤ 50
