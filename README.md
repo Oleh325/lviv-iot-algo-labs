@@ -55,3 +55,7 @@ The length of the maximum chain
 Limitation:
 1 ≤ N ≤ 10^5
 1 ≤ L ≤ 50
+
+## Lab 5
+
+Create a realisation for Knuth Morris Pratt string matching algorithm and unit tests for it. Test the algorithm in it's worst case, best case and average scenario.
